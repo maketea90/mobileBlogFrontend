@@ -3,12 +3,11 @@ import { Stack } from "expo-router";
 export default function RootLayout() {
   return (
     <Stack screenOptions={{
-      // Hide the header for all other routes.
-      headerShown: false,
-    }}>
+        // Hide the header for all other routes.
+        headerShown: false,
+      }}>
       <Stack.Screen name='index'/>
-      <Stack.Screen name='login'/>
-      <Stack.Screen name='(tabs)'/>
+      <Stack.Screen name='[id]'/>
     </Stack>
   );
 }

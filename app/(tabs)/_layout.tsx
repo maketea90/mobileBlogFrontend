@@ -1,37 +1,32 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
-
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { ColorProperties } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+    <Tabs screenOptions={{
+        // Hide the header for all other routes.
         headerShown: false,
       }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
+      <Tabs.Screen name='home' 
+
+
+      options={{ tabBarLabel: "Home", tabBarIcon: ({ color, size }) => (
+        <Ionicons name="home" color={color} size={size} />
+      )}}/>
+      <Tabs.Screen name='post' options={{tabBarLabel:"Post",
+
+        tabBarIcon: ({color, size}) => (
+            <MaterialIcons name='post-add' color={color} size={size}/>
+        )
+      }}/>
+      
+      <Tabs.Screen name="profile" options={{ tabBarLabel: "Profile",
+
+        tabBarIcon: ({color, size}) => (
+            <MaterialCommunityIcons name='face-woman-profile' color={color} size={size}/>
+        )
+       }}/>
     </Tabs>
   );
 }
