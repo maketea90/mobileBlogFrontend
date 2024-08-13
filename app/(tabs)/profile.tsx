@@ -58,6 +58,10 @@ export default function Profile(){
                 }
             )
 
+            const result = await response.json()
+
+            alert(`${result}`)
+
         }catch(err){
             console.error(err)
         }

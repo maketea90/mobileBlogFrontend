@@ -45,13 +45,17 @@ export default function CreatePost(){
 
     return(
         <View style={styles.container}>
-            <Text style={{margin: 5}}>To post something new, think of a title and message then press submit post.</Text>
+            <Text style={{margin: 5}}>To post something new, think of a title and message then press post.</Text>
 
+
+        <View style={styles.form}>
             <TextInput style={{margin: 5}} placeholder="Your post's title" onChangeText={text => setTitle(text)} value={title}></TextInput>
 
             <TextInput style={{margin: 5}}placeholder="Your post's message" onChangeText={text => setMessage(text)} value={message}></TextInput>
 
-            <Button style={{margin: 5}} title='Submit Post' onPress={handleSubmitPost}></Button>
+            <Button style={{margin: 5}} title='Post' onPress={handleSubmitPost}></Button>       
+        </View>
+            
         </View>
         
     )
@@ -59,5 +63,7 @@ export default function CreatePost(){
 
 const styles = StyleSheet.create({
 
-    container: {flex: 1, flexDirection: 'column', justifyContent: 'center'}
+    container: {flex: 1, flexDirection: 'column', justifyContent: 'center'},
+
+    form: {borderWidth: 2, borderColor: 'black', backgroundColor: 'lightGrey'}
 })
