@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, Button, TextInput } from "react-native";
+import { View, Text, StyleSheet, Button, TextInput, FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { FlatList } from "react-native-gesture-handler";
 
 export default function Post() {
 
@@ -12,13 +13,14 @@ export default function Post() {
     const [newComment, setNewComment] = useState('')
     const [indicator, setIndicator] = useState(false)
 
+    
     const handleComment = async () => {
-
-
 
         const value = await AsyncStorage.getItem('token')
 
-        const token = value != null ? JSON.parse(value) : null;
+        const token = value != null ? JSON.parse(value) : null; 
+
+        
 
         try{
             const response = await fetch(`https://ancient-lake-71305-93605de8b47e.herokuapp.com/posts/${params.id}/comments`,
@@ -47,11 +49,17 @@ export default function Post() {
 
     const loadPostAndComments = async () => {
 
+        const value = await AsyncStorage.getItem('token')
+
+        const token = value != null ? JSON.parse(value) : null;
+        
         try{
 
             const postResponse = await fetch(`https://ancient-lake-71305-93605de8b47e.herokuapp.com/posts/${params.id}`,
                 {
-                    headers: {'Content-Type': 'application/json'}
+                    headers: {'Content-Type': 'application/json',
+                        'Authorization': token
+                    }
                 }
             )
 
@@ -62,7 +70,9 @@ export default function Post() {
 
             const commentsResponse = await fetch(`https://ancient-lake-71305-93605de8b47e.herokuapp.com/posts/${params.id}/comments`,
                 {
-                    headers: {'Content-Type': 'application/json'}
+                    headers: {'Content-Type': 'application/json',
+                        'Authorization': token
+                    }
                 }
             )
 
@@ -73,6 +83,31 @@ export default function Post() {
         } catch(err){
             console.error(err)
         }
+    }
+
+    const renderComments = ({item}) => {
+        return(
+            <>
+                <View style={styles.comment} key={item._id}>
+                    
+                    <Text>{}</Text>
+                    <Text>{item.message}</Text>
+                
+                </View>
+            </>
+        )
+    }
+
+    const renderNewCommentHandler = () => {
+        return(
+            <>
+            <View style={{margin: 10}}>
+                <TextInput onChangeText={text => setNewComment(text)} placeholder="comment on this post"></TextInput>
+                <Button title='Send' onPress={handleComment}></Button>  
+            </View>
+            
+            </>
+        )
     }
 
     useEffect(() => {
@@ -97,21 +132,18 @@ export default function Post() {
                     <Text>{post.text}</Text>
                 </View>
                 
-                {comments.map((comment) => {
-            return(
-                <View style={styles.comment} key={comment._id}>
-                    
-                    <Text>{}</Text>
-                    <Text>{comment.message}</Text>
-                
-                </View>
-            )
-        })}     
+                <FlatList
+                data={comments}
+                renderItem={renderComments}
+                keyExtractor={item => item._id}
+                ListFooterComponent={renderNewCommentHandler}
+                style={{flex: 1}}
+                />  
 
-            <View style={{margin: 10}}>
+            {/* <View style={{margin: 10}}>
                 <TextInput onChangeText={text => setNewComment(text)} placeholder="comment on this post"></TextInput>
                 <Button title='Send' onPress={handleComment}></Button>  
-            </View>
+            </View> */}
                 
     
             </View>

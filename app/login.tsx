@@ -54,7 +54,7 @@ export default function Login(){
                 
             }
         } catch(err){
-            console.log(err)
+            throw new Error(err)
         } finally{
             setIsLoading(false)
         }
@@ -73,8 +73,8 @@ export default function Login(){
 
     if(isLoading){
         return(
-            <View>
-                <Text style={{flex:1, justifyContent: 'center'}}>Loading...</Text>
+            <View style={styles.container}>
+                <Text style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>Loading...</Text>
             </View>
         )
     } else {

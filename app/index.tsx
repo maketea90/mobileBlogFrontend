@@ -7,33 +7,63 @@ export default function Signup() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState('')
 
     const handleSignup = async () => {
 
+        setIsLoading(true)
+
         const data = {username, password, confirmPassword}
 
-        const response = await fetch('https://ancient-lake-71305-93605de8b47e.herokuapp.com/signup',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
+        try {
+            const response = await fetch('https://ancient-lake-71305-93605de8b47e.herokuapp.com/signup',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+    
+                }
+            )
 
+            const result = await response.json()
+
+            if(!response.ok){
+                alert(`${result}`)
+            } else {
+                router.push('/login')
+                alert(`${result}`)
+                setIsLoading(false)
             }
-        )
 
-        const result = await response.json()
-
-        alert(`${result}`)
-
-        router.push('/login')
+            
+        } catch(err){
+            setError(err)
+        } finally{
+            
+            setIsLoading(false)
+        }
         
         // alert(`username: ${username}, password: ${password}`)
     }
 
-    return(
-        <View style={styles.container}>
+    if(isLoading && !error){
+        return(
+            <View style={styles.container}>
+                <Text>Loading...</Text>
+            </View>
+        )
+    } else if (!isLoading && error){
+        return(
+            <View style={styles.container}>
+                <Text>{error}</Text>
+            </View>
+        )
+    } else {
+        return(
+            <View style={styles.container}>
             <Text>{`Please sign up by entering a username and password.
             `}</Text>
             <TextInput 
@@ -65,7 +95,10 @@ export default function Signup() {
             <Text>{'  '}</Text>
             <Text>If you have already signed up, click <Link href='/login' style={styles.login}>here</Link> and follow the instructions to log in.</Text>
         </View>
-    )
+        )
+    }
+
+   
 }
 
 const styles = StyleSheet.create({
