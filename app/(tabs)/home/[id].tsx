@@ -63,9 +63,16 @@ export default function Post() {
                 }
             )
 
-            const postResult = await postResponse.json()
+            if(!postResponse.ok){
+                const postResult = await postResponse.json()
+                alert(`${postResult}`)
+            } else {
+                const postResult = await postResponse.json()
 
-            setPost(postResult)
+                setPost(postResult)
+            }
+
+            
             
 
             const commentsResponse = await fetch(`https://ancient-lake-71305-93605de8b47e.herokuapp.com/posts/${params.id}/comments`,
@@ -75,6 +82,12 @@ export default function Post() {
                     }
                 }
             )
+            
+            console.log(commentsResponse)
+
+            if(!commentsResponse.ok){
+                
+            }
 
             const commentResult = await commentsResponse.json()
 
@@ -102,7 +115,7 @@ export default function Post() {
         return(
             <>
             <View style={{margin: 10}}>
-                <TextInput onChangeText={text => setNewComment(text)} placeholder="comment on this post"></TextInput>
+                <TextInput onChangeText={text => setNewComment(text)} maxLength={200} placeholder="comment on this post"></TextInput>
                 <Button title='Send' onPress={handleComment}></Button>  
             </View>
             
@@ -114,14 +127,20 @@ export default function Post() {
         loadPostAndComments()
     }, [indicator])
 
-    if(!comments){
+    if(!comments && post){
         return(
             <View style={styles.container}>
                 <Text style={styles.title}>{post.title}</Text>
                 <Text>{post.text}</Text>
-                <TextInput onChangeText={text => setNewComment(text)} placeholder="comment on this post"></TextInput>
+                <TextInput onChangeText={text => setNewComment(text)} maxLength={200} placeholder="comment on this post"></TextInput>
                 <Button title='Send' onPress={handleComment}></Button>
             </View>
+        )
+    } else if(!post) {
+        return(
+            <>
+                <Text>You must be logged in to view the post.</Text>
+            </>
         )
     } else {
         return(

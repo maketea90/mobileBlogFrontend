@@ -52,7 +52,7 @@ export default function CreatePost(){
            
             <TextInput style={styles.input} placeholder="Your post's title" onChangeText={text => setTitle(text)} maxLength={30} value={title}></TextInput>
 
-            <TextInput style={styles.input} placeholder="Your post's message" onChangeText={text => setMessage(text)} maxLength={200} value={message}></TextInput>
+            <TextInput multiline style={styles.input} placeholder="Your post's message" onChangeText={text => setMessage(text)} maxLength={200} value={message}></TextInput>
 
         </View>
 

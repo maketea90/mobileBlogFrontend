@@ -9,16 +9,19 @@ export default function Login(){
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    // const [error, setError] = useState('')
 
     const handleLogin = async () => {
         
         const data = {username, password}
         
 
-        try{
+        
 
             setIsLoading(true)
+        try{
 
+        
             const response = await fetch('https://ancient-lake-71305-93605de8b47e.herokuapp.com/login', {
                 method: 'POST',
                 headers: {
@@ -27,9 +30,21 @@ export default function Login(){
                 body: JSON.stringify(data)
             })
 
+            // console.log(response)
+
 
             if(!response.ok){
-                throw new Error('invalid username or password')
+
+                const result = await response.json()
+
+                // setIsLoading(false)
+
+                alert(` ${result.usernameError} ${result.passwordError}`)
+
+                
+
+                
+                
             } else {
                 const result = await response.json()
 
@@ -38,26 +53,32 @@ export default function Login(){
                 // alert(`${result}`)
 
                 if(!result.token){
+                    // setIsLoading(false)
                     alert(`${result}`)
                 } else {
+                    
                     try{
+                        
                         await AsyncStorage.setItem('token', JSON.stringify(result.token))
-                    } catch(err){
-                        console.log(err)
+                    } catch(err)
+                    {
+                    
+                        // setIsLoading(false)
+                        throw Error(err)
                     }
                     
-    
-                    
+                
+                    // setIsLoading(false)
                     router.replace('/(tabs)/home')
-                }
+                } }
 
                 
+            } catch(err){
+                throw Error(err)
+            } finally{
+                setIsLoading(false)
             }
-        } catch(err){
-            throw new Error(err)
-        } finally{
-            setIsLoading(false)
-        }
+        
         
         
         

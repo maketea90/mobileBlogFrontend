@@ -31,7 +31,9 @@ export default function Signup() {
             const result = await response.json()
 
             if(!response.ok){
-                alert(`${result}`)
+                
+                
+                alert(`${result.usernameError}  ${result.passwordError}  ${result.confirmPasswordError}`)
             } else {
                 router.push('/login')
                 alert(`${result}`)

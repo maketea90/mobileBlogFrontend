@@ -13,11 +13,13 @@ export default function Profile(){
         router.replace('/')
     }
 
+    
+
     const changeUsername = async () => {
 
         const value = await AsyncStorage.getItem('token')
 
-        const token = value != null ? JSON.parse(value) : null;   
+        const token = value != null ? JSON.parse(value) : null; 
 
         try{
             const response = await fetch('https://ancient-lake-71305-93605de8b47e.herokuapp.com/changeUsername',
@@ -31,6 +33,8 @@ export default function Profile(){
                 }
             )
 
+            console.log(response)
+
             const result = await response.json()
 
             console.log(result)
@@ -42,6 +46,7 @@ export default function Profile(){
     }
 
     const changePassword = async() => {
+        
         const value = await AsyncStorage.getItem('token')
 
         const token = value != null ? JSON.parse(value) : null;  
@@ -57,6 +62,8 @@ export default function Profile(){
                     body: JSON.stringify({password})
                 }
             )
+
+            console.log(response)
 
             const result = await response.json()
 

@@ -99,31 +99,41 @@ export default function Feed(){
     //     getPosts()
     // }, [])
 
-      return (
-        <>
-        
-        
-
-        
-        
-
-        <FlatList
-            data={posts}
-            renderItem={renderItem}
-            keyExtractor={item => item._id}
-            ListFooterComponent={renderLoader}
-            onEndReached={loadMoreItem}
-            onEndReachedThreshold={1}
-            ListHeaderComponent={renderHeader}
-            style={{flex: 1}}
-          />
-
+      if(!posts){
+        return(
+          <>
+            <Text>You must be logged in to view posts.</Text>
+          </>
+        )
+      } else {
+        return (
+          <>
           
-        
-          {/* <StatusBar backgroundColor="#000" /> */}
           
-        </>
-      );
+  
+          
+          
+  
+          <FlatList
+              data={posts}
+              renderItem={renderItem}
+              keyExtractor={item => item._id}
+              ListFooterComponent={renderLoader}
+              onEndReached={loadMoreItem}
+              onEndReachedThreshold={1}
+              ListHeaderComponent={renderHeader}
+              style={{flex: 1}}
+            />
+  
+            
+          
+            {/* <StatusBar backgroundColor="#000" /> */}
+            
+          </>
+        );
+      }
+
+      
     };
 
 const styles = StyleSheet.create({
